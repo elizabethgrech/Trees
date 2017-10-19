@@ -16,22 +16,28 @@ public class BST {
 	private Node rootNode = null;             // root of BST
 
     private class Node {
-        private int value;         // associated data
-        private Node left = null;
-        private Node right = null;
+        private Integer value;         // associated data
+        private Node left;
+        private Node right;
 
+        public Node() {
+            this.value = null;
+            this.left = null;
+            this.right = null;
+        }
+        
         public Node(int val) {
             this.value = val;
+            this.left = null;
+            this.right = null;
         }
-        
-        public void insertLeft(Node node){
-        	this.left = node;
-        }
-        public void insertRight(Node node){
-        	this.right = node;
-        }
-        
-        public int value(){
+
+/************************************************
+ *                
+ *                Node Definition : Gets
+ *                
+ ************************************************/
+        public Integer value(){
         	return value;
         }
         public Node left(){
@@ -41,22 +47,92 @@ public class BST {
         public Node right(){
         	return right;
         }
+        
+        //TODO delete this method
+/*        public void insertLeft(Node node){
+        	this.left = node;
+        }
+        //TODO delete this method
+        public void insertRight(Node node){
+        	this.right = node;
+        }*/
+
+/************************************************
+ *                
+ *                Node Definition : Insert
+ *                
+ ************************************************/
+        /**
+         * 
+         * @param insertValue
+         * @return true or false based on success of inserting a new node
+         */
+        public boolean insert(int insertValue){
+        	return(insert(new Node(insertValue)));
+        }
+        /**
+         * 
+         * @param insertNode
+         * @return true or false based on success of inserting a new node
+         */
+        public boolean insert(Node insertNode){
+    		if(rootNode == null || rootNode.value() == null){
+    			rootNode = insertNode;
+    			return(true);
+    		}
+        	return(insert(rootNode, insertNode));
+        }
+        
+        /**
+         *  Recursive Function for traversing the nodes 
+         * @param travNode
+         * @param insertNode
+         * @return true or false based on success of inserting a new node
+         */
+        private boolean insert(Node travNode, Node insertNode){
+    		
+    		
+    		if(travNode.value() > insertNode.value()){
+    			if(nodeNull(travNode.left())){
+    				//this.left = insertNode;
+    				travNode.left = insertNode;
+    				
+    				return(true);
+    			}else{
+    				return(insert(travNode.left(), insertNode));
+    			}
+    		}
+    		else {
+    			if(travNode.value() < insertNode.value()){
+    				if(nodeNull(travNode.right())){
+        				//this.right = insertNode;
+        				travNode.right = insertNode;
+    					return(true);
+    				}else{
+    					return(insert(travNode.right(), insertNode));
+    				}
+    			}
+    		}
+    		return(false);
+        	
+        }
+        
     }
 
     
 /************************************************
  *                
- *                
+ *                BST Definition
  *                
  ************************************************/
-    
-    String leftNodeBorder = "[";
-    String rightNodeBorder = "]";
+
+    private static final String LNB = "["; //leftNodeBorder
+    private static final String RNB = "]"; //rightNodeBorder
     
     
 	public BST() {
 		// TODO Auto-generated constructor stub
-		
+		rootNode = new Node();
 	}
 	
 	
@@ -97,87 +173,11 @@ public class BST {
 
 /************************************************
  *                
- *                Insert
+ *                BST Definition : Insert
  *                
  ************************************************/
 	public boolean insert(int insertValue){
-		//System.out.println("log: root call inserting "+insertValue);
-		return(insert(rootNode, insertValue));
-	}
-	
-	public boolean insert(Node startNode, int insertValue){
-		//System.out.println("log: inserting "+insertValue);
-		
-		if(startNode == null){
-			//System.out.println("log: startNode is null ");
-			rootNode = new Node(insertValue);
-			return(true);
-		}
-		
-		if(rootNode.value() > insertValue){
-			if(nodeNull(rootNode.left())){
-				rootNode.insertLeft(new Node(insertValue));
-				return(true);
-			}else{
-				return(insertTraverseLeft(rootNode.left(), insertValue));
-			}
-		}
-		else {
-			if(rootNode.value() < insertValue){
-				if(nodeNull(rootNode.right())){
-					rootNode.insertRight(new Node(insertValue));
-					return(true);
-				}else{
-					return(insertTraverseRight(rootNode.right(), insertValue));
-				}
-			}
-		}
-		
-		return(false);
-	}
-	
-	public boolean insertTraverseLeft(Node travNode, int insertValue){
-		if(travNode.value() > insertValue){
-			if(nodeNull(travNode.left())){
-				travNode.insertLeft(new Node(insertValue));
-				return(true);
-			}else{
-				return(insertTraverseLeft(travNode.left(), insertValue));
-			}
-		}
-		else {
-			if(travNode.value() < insertValue){
-				if(nodeNull(travNode.right())){
-					travNode.insertRight(new Node(insertValue));
-					return(true);
-				}else{
-					return(insertTraverseRight(travNode.right(), insertValue));
-				}
-			}
-		}
-		return(false);
-	}
-	
-	public boolean insertTraverseRight(Node travNode, int insertValue){
-		if(travNode.value() > insertValue){
-			if(nodeNull(travNode.left())){
-				travNode.insertLeft(new Node(insertValue));
-				return(true);
-			}else{
-				return(insertTraverseLeft(travNode.left(), insertValue));
-			}
-		}
-		else {
-			if(travNode.value() < insertValue){
-				if(nodeNull(travNode.right())){
-					travNode.insertRight(new Node(insertValue));
-					return(true);
-				}else{
-					return(insertTraverseRight(travNode.right(), insertValue));
-				}
-			}
-		}
-		return(false);
+		return(rootNode.insert(insertValue));
 	}
 	
 /************************************************
@@ -186,14 +186,78 @@ public class BST {
  *                
  ************************************************/
 	
-
+/************************************************
+ *                
+ *                Print2 - revamp recursion
+ *                
+ ************************************************/
+	List<String> treePrint2 = new ArrayList<String>(0);
+	List<String> treePrintIndented = new ArrayList<String>(0);
+	public static int level = -1;
+	public static String indent = "|-";
 	
+	public List<String> print2(){
+		print2(rootNode);
+		return(treePrint2);
+	}
+
+/*	public List<String> printIndented(){
+		print2(rootNode);
+		
+        for (int i=0; i<treePrint2.size(); i++){
+        	System.out.println(treePrint2.get(i)+" ");
+        	
+        	indent += "--";
+        	
+        }
+		//indent = indent.substring(0, indent.length()-2);
+		return(treePrint2);
+	}*/
+	
+	public void print2(Node printNode){
+		
+		level++;
+		//indent += "--";
+		
+		//Add array element if none exists
+		if(treePrint2.size()-1<level)
+			treePrint2.add(level,"");
+		
+		
+		
+		if(nodeNull(printNode))
+			treePrint2.set(level, treePrint2.get(level)+LNB+"N"+RNB);
+		else{
+			treePrint2.set(level, treePrint2.get(level)+LNB+printNode.value().toString()+RNB);
+			print2(printNode.left());
+			print2(printNode.right());
+		}
+		
+		//right
+/*		if(nodeNull(printNode))
+			treePrint2.set(level, treePrint2.get(level)+"N");
+		else{
+			treePrint2.set(level, treePrint2.get(level)+LNB+printNode.value().toString()+RNB);
+			print2(printNode.right());
+		}*/
+		
+		level--;
+		//indent = indent.substring(0, indent.length()-2);
+		return;
+	}
+	
+	public boolean nodeNull(Node printNode){
+		if(printNode == null || ((Integer)printNode.value()) == null)
+			return true;
+		else
+			return false;
+	}
 /************************************************
  *                
  *                Print
  *                
  ************************************************/
-	int i = 1;
+/*	int i = 1;
 	List<String> treePrint = new ArrayList<String>(i);
 	int masterNodeDepth;
 	int expandedNodeDepth;
@@ -214,13 +278,13 @@ public class BST {
 		{
 			//System.out.println("N");
 			//treePrint.add(i,"n");
-			treePrint.set(i, treePrint.get(i)+leftNodeBorder+"N"+rightNodeBorder);
+			treePrint.set(i, treePrint.get(i)+LNB+"N"+RNB);
 			}
 		else{
 			//System.out.println(printNode.value());
 			//treePrint.add(i,""+printNode.value());
 			//System.out.println(treePrint.size());
-			treePrint.set(i, treePrint.get(i)+leftNodeBorder+printNode.value()+rightNodeBorder);
+			treePrint.set(i, treePrint.get(i)+LNB+printNode.value()+RNB);
 		}
 		
 		if(!nodeNull(printNode.left()))
@@ -265,13 +329,13 @@ public class BST {
 		if(nodeNull(printNode))
 		{
 			//System.out.println("N");
-			treePrint.set(i, treePrint.get(i)+leftNodeBorder+"N"+rightNodeBorder);
+			treePrint.set(i, treePrint.get(i)+LNB+"N"+RNB);
 			i--;
 			//i--;
 		}
 		else{
 			//System.out.println(printNode.value());
-			treePrint.set(i, treePrint.get(i)+leftNodeBorder+printNode.value()+rightNodeBorder);
+			treePrint.set(i, treePrint.get(i)+LNB+printNode.value()+RNB);
 			printLeft(printNode.left());
 			printRight(printNode.right());
 		}
@@ -286,13 +350,13 @@ public class BST {
 		if(nodeNull(printNode))
 		{
 			//System.out.println("N");
-			treePrint.set(i, treePrint.get(i)+leftNodeBorder+"N"+rightNodeBorder);
+			treePrint.set(i, treePrint.get(i)+LNB+"N"+RNB);
 			i--;
 			//i--;
 		}
 		else{
 			//System.out.println(printNode.value());
-			treePrint.set(i, treePrint.get(i)+leftNodeBorder+printNode.value()+rightNodeBorder);
+			treePrint.set(i, treePrint.get(i)+LNB+printNode.value()+RNB);
 			printLeft(printNode.left());
 			printRight(printNode.right());
 		}
@@ -365,7 +429,7 @@ public class BST {
         		spacesUp = "";
         	}
         	
-/*        	if(!treePrint.get(i).contains("/")){
+        	if(!treePrint.get(i).contains("/")){
         		for(int j=0; j < countUp; j++){
         			spacesUp+= " ";
         		}
@@ -379,7 +443,7 @@ public class BST {
         		//reset count and spaces
         		countUp = 1;
         		spacesUp = "";
-        	}*/
+        	}
         }
         
     	for (int i=expandedNodeDepth-1; i > 0; i--){
@@ -415,7 +479,7 @@ public class BST {
             reverseLvl--;
             rplcString = "";
         }
-	}
+	}*/
 	
 /************************************************
  *                
@@ -425,38 +489,71 @@ public class BST {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		BST me = new BST();
+		//BST me = new BST();
+		BST me2 = new BST();
 
-/*		System.out.println(me.insert(6));
-		System.out.println(me.insert(3));
-		System.out.println(me.insert(8));
-		System.out.println(me.insert(1));
-		System.out.println(me.insert(6));
-		System.out.println(me.insert(7));
-		System.out.println(me.insert(2));
-		System.out.println(me.insert(9));
-		System.out.println(me.insert(8));
-		System.out.println(me.insert(0));
-		System.out.println(me.insert(5));
-		System.out.println(me.insert(8));
-		System.out.println(me.insert(0));
-		System.out.println(me.insert(0));
-		System.out.println(me.insert(5));
-		System.out.println(me.insert(6));
-		System.out.println(me.insert(0));
-		System.out.println(me.insert(9));
-		System.out.println(me.insert(7));
-		System.out.println(me.insert(6));*/
+		/*me.insert(6);
+		me.insert(3);
+		me.insert(8);
+		me.insert(1);
+		me.insert(6);
+		me.insert(7);
+		me.insert(2);
+		me.insert(9);
+		me.insert(8);
+		me.insert(0);
+		me.insert(5);
+		me.insert(8);
+		me.insert(0);
+		me.insert(0);
+		me.insert(5);
+		me.insert(6);
+		me.insert(0);
+		me.insert(9);
+		me.insert(7);
+		me.insert(6);*/
 		
 		Random rand = new Random();
 		rand.ints(100);
 		for(int i=0; i<50; i++){
 			//System.out.println(me.insert(rand.nextInt(10)));
-			me.insert(rand.nextInt(100));
+			me2.insert(rand.nextInt(100));
 		}
 		
-		me.print();
+		//me.print();
 		
+		
+
+
+		
+/*		me2.insert(6);
+		me2.insert(3);
+		me2.insert(8);
+		me2.insert(1);
+		me2.insert(6);
+		me2.insert(7);
+		me2.insert(2);
+		me2.insert(9);
+		me2.insert(8);
+		me2.insert(0);
+		me2.insert(5);
+		me2.insert(8);
+		me2.insert(0);
+		me2.insert(0);
+		me2.insert(5);
+		me2.insert(6);
+		me2.insert(0);
+		me2.insert(9);
+		me2.insert(7);
+		me2.insert(6);*/
+
+		System.out.println("--------Da Raw Tree--------");
+
+		
+		List<String> treePrint2 = me2.print2();
+        for (int i=0; i<treePrint2.size(); i++){
+        	System.out.println(treePrint2.get(i)+" ");
+        }
 	}
 
 }
