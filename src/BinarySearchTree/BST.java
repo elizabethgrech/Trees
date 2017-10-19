@@ -37,6 +37,7 @@ public class BST {
  *                Node Definition : Gets
  *                
  ************************************************/
+        
         public Integer value(){
         	return value;
         }
@@ -48,15 +49,6 @@ public class BST {
         	return right;
         }
         
-        //TODO delete this method
-/*        public void insertLeft(Node node){
-        	this.left = node;
-        }
-        //TODO delete this method
-        public void insertRight(Node node){
-        	this.right = node;
-        }*/
-
 /************************************************
  *                
  *                Node Definition : Insert
@@ -217,7 +209,6 @@ public class BST {
 	public void print2(Node printNode){
 		
 		level++;
-		//indent += "--";
 		
 		//Add array element if none exists
 		if(treePrint2.size()-1<level)
@@ -233,16 +224,7 @@ public class BST {
 			print2(printNode.right());
 		}
 		
-		//right
-/*		if(nodeNull(printNode))
-			treePrint2.set(level, treePrint2.get(level)+"N");
-		else{
-			treePrint2.set(level, treePrint2.get(level)+LNB+printNode.value().toString()+RNB);
-			print2(printNode.right());
-		}*/
-		
 		level--;
-		//indent = indent.substring(0, indent.length()-2);
 		return;
 	}
 	
@@ -252,238 +234,10 @@ public class BST {
 		else
 			return false;
 	}
-/************************************************
- *                
- *                Print
- *                
- ************************************************/
-/*	int i = 1;
-	List<String> treePrint = new ArrayList<String>(i);
-	int masterNodeDepth;
-	int expandedNodeDepth;
-	
-	
-	public void print(){
-		print(rootNode);
-		return;
-	}
-	
-	public void print(Node printNode){
-		//System.out.println("poop Test");
-		
-		i = 0;
-		treePrint.add(i, "");
-		
-		if(nodeNull(printNode))
-		{
-			//System.out.println("N");
-			//treePrint.add(i,"n");
-			treePrint.set(i, treePrint.get(i)+LNB+"N"+RNB);
-			}
-		else{
-			//System.out.println(printNode.value());
-			//treePrint.add(i,""+printNode.value());
-			//System.out.println(treePrint.size());
-			treePrint.set(i, treePrint.get(i)+LNB+printNode.value()+RNB);
-		}
-		
-		if(!nodeNull(printNode.left()))
-			printLeft(printNode.left());
-		
-		printRight(printNode.right());
-
-		System.out.println("--------Da Raw Tree--------");
-        for (int i=0; i<treePrint.size(); i++){
-        	System.out.println(treePrint.get(i)+" ");
-        }
-
-		System.out.println("--------Da Prety Tree--------");
-		//there must be a better way to do this...
-		masterNodeDepth = treePrint.size();
-		System.out.println("Log size:"+treePrint.size());
-		printAddArrows();
-		expandedNodeDepth = treePrint.size();
-		System.out.println("Log size:"+treePrint.size());
-		printAddSpaces();
-		System.out.println("Log size:"+treePrint.size());
-		
-        // Printing elements one by one
-        for (int i=0; i<treePrint.size(); i++){
-        	System.out.println(treePrint.get(i));
-        }
-        	
-		
-		return;
-	}
-	
-	public void printLeft(Node printNode){
-		//i++;
-		//System.out.println("|");
-		//if(treePrint.size()-1<i)
-		//else
-		//	treePrint.set(i,treePrint.get(i)+"/");
-		i++;
-		if(treePrint.size()-1<i)
-			treePrint.add(i,"");
-		
-		if(nodeNull(printNode))
-		{
-			//System.out.println("N");
-			treePrint.set(i, treePrint.get(i)+LNB+"N"+RNB);
-			i--;
-			//i--;
-		}
-		else{
-			//System.out.println(printNode.value());
-			treePrint.set(i, treePrint.get(i)+LNB+printNode.value()+RNB);
-			printLeft(printNode.left());
-			printRight(printNode.right());
-		}
-		
-	}
-	
-	public void printRight(Node printNode){
-		//i++;
-		//System.out.println(" \\");
-		//treePrint.set(i, treePrint.get(i)+" \\  ");
-		i++;
-		if(nodeNull(printNode))
-		{
-			//System.out.println("N");
-			treePrint.set(i, treePrint.get(i)+LNB+"N"+RNB);
-			i--;
-			//i--;
-		}
-		else{
-			//System.out.println(printNode.value());
-			treePrint.set(i, treePrint.get(i)+LNB+printNode.value()+RNB);
-			printLeft(printNode.left());
-			printRight(printNode.right());
-		}
-		i--;
-		//i--;
-	}
-	
-	public boolean nodeNull(Node printNode){
-		if(printNode == null || ((Integer)printNode.value()) == null)
-			return true;
-		else
-			return false;
-	}
-	
-	private void printAddArrows(){
-		int size = treePrint.size();
-		String strbase = "/\\";
-		String str = "/\\";
-		int nfactor = 0;
-		int strfactor = 1;
-		
-		for(int i = 1; i<treePrint.size(); i++){
-			
-			for(int j=0; j<size;j++){
-				treePrint.add(i,str);
-				i++;
-			}
-			
-			size=size/2;
-			strfactor=strfactor*4;
-			
-			try{
-				nfactor += treePrint.get(i+1).length() - treePrint.get(i+1).replace("N", "").length();
-				strfactor=strfactor-nfactor;
-				str="";
-				for(int z=0; z<strfactor; z++){
-					str+=strbase;
-				}
-			}
-			catch(IndexOutOfBoundsException e){
-				//do nothing
-				System.out.println("welp");
-			}
-		}
-	}
-	
-	private void printAddSpaces(){
-		int countUp = 1;
-		String spacesUp = "";
-		
-		
-		int countDown = 1;
-		String spacesDown = "";
-		
-        // 
-        for (int i=0; i < expandedNodeDepth; i++){
-        	if(treePrint.get(i).contains("/\\")){
-        		for(int j=0; j < countUp; j++){
-        			spacesUp+= " ";
-        		}
-        		//treePrint.get(i).replaceAll("/\\", "/"+spaces+"\\");
-        		//System.out.println(treePrint.get(i).replace("/\\", "/"+spaces+"\\"));
-        		treePrint.set(i, treePrint.get(i).replace("/\\", "/"+spacesUp+"\\"));
-        		countUp+=2;
-        		spacesUp = "";
-        	}
-        	else{
-        		//reset count and spaces
-        		countUp = 1;
-        		spacesUp = "";
-        	}
-        	
-        	if(!treePrint.get(i).contains("/")){
-        		for(int j=0; j < countUp; j++){
-        			spacesUp+= " ";
-        		}
-        		//treePrint.get(i).replaceAll("/\\", "/"+spaces+"\\");
-        		//System.out.println(treePrint.get(i).replace("/\\", "/"+spaces+"\\"));
-        		treePrint.set(i, treePrint.get(i).replace("/\\", "/"+spacesUp+"\\"));
-        		countUp+=2;
-        		spacesUp = "";
-        	}
-        	else{
-        		//reset count and spaces
-        		countUp = 1;
-        		spacesUp = "";
-        	}
-        }
-        
-    	for (int i=expandedNodeDepth-1; i > 0; i--){
-        	if(treePrint.get(i).contains("\\/")){
-        		
-        		for(int j=0; j < countDown; j++){
-        			spacesDown+= " ";
-        		}
-        		treePrint.set(i, treePrint.get(i).replace("\\/", "\\"+spacesDown+"/"));
-        		countDown+=2;
-        		spacesDown = "";
-        	}
-        	else{
-        		//reset count and spaces
-        		//countDown = expandedNodeDepth-(i+1);
-        		countDown = 0 + expandedNodeDepth - i;
-        		//System.out.println("Down i = "+i);
-        		//countDown = i-1;
-        		spacesDown = "";
-        	}
-        	
-
-        }
-
-		int reverseLvl = treePrint.size();
-		String rplcString = "";
-        for (int i=0; i<treePrint.size(); i++){
-            for(int j=0; j<reverseLvl-1; j++){
-            	rplcString = rplcString+" ";
-            }
-            treePrint.set(i, rplcString+treePrint.get(i));
-        	//System.out.println(treePrint.get(i)+" ");
-            reverseLvl--;
-            rplcString = "";
-        }
-	}*/
 	
 /************************************************
  *                
- *                
+ *                Main
  *                
  ************************************************/
 	public static void main(String[] args) {
