@@ -13,12 +13,17 @@ public class BST {
 	public static List<String> treePrintRaw = new ArrayList<String>(0);
 	public static List<String> treePrintIndented = new ArrayList<String>(0);
 	
+	public static int level = -1;
+	public static String indent = "|-";
+	
     
 	
 /************************************************
+ ************************************************
  *               
  *                Node Definition 
  *                
+ ************************************************
  ************************************************/
 	
 	private Node rootNode = null;             // root of BST
@@ -95,11 +100,11 @@ public class BST {
         	}
     		return(false);
         }
-        /************************************************
-         *                
-         *                Node Definition : Print
-         *                
-         ************************************************/
+/************************************************
+ *                
+ *                Node Definition : Print
+ *                
+ ************************************************/
             
         	private void printRaw(){
         		level++;
@@ -119,16 +124,30 @@ public class BST {
         	}
         
         
-        
-    }
 
+/************************************************
+ *                
+ *                Node Definition : Delete
+ *                
+ ************************************************/
+		public boolean delete(int insertValue){
+			
+			
+			
+			return(false);
+		}
+		
 	
+    }/** End Node Definition **/
+
     
     
 /************************************************
+ ************************************************
  *                
  *                BST Definition
  *                
+ ************************************************
  ************************************************/
     
     
@@ -187,6 +206,9 @@ public class BST {
  *                Delete
  *                
  ************************************************/
+	public boolean delete(int insertValue){
+		return(rootNode.delete(insertValue));
+	}
 	
 /************************************************
  *                
@@ -197,10 +219,8 @@ public class BST {
 		rootNode.printRaw();
 		return;
 	}
-	public static int level = -1;
-	public static String indent = "|-";
 	
-	public List<String> print2(){
+	/*public List<String> print2(){
 		print2(rootNode);
 		return(treePrint2);
 	}
@@ -232,7 +252,7 @@ public class BST {
 			return true;
 		else
 			return false;
-	}
+	}*/
 	
 /************************************************
  *                
@@ -242,40 +262,8 @@ public class BST {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//BST me = new BST();
 		BST me2 = new BST();
 
-		/*me.insert(6);
-		me.insert(3);
-		me.insert(8);
-		me.insert(1);
-		me.insert(6);
-		me.insert(7);
-		me.insert(2);
-		me.insert(9);
-		me.insert(8);
-		me.insert(0);
-		me.insert(5);
-		me.insert(8);
-		me.insert(0);
-		me.insert(0);
-		me.insert(5);
-		me.insert(6);
-		me.insert(0);
-		me.insert(9);
-		me.insert(7);
-		me.insert(6);*/
-		
-/*		Random rand = new Random();
-		rand.ints(100);
-		for(int i=0; i<50; i++){
-			//System.out.println(me.insert(rand.nextInt(10)));
-			me2.insert(rand.nextInt(100));
-		}
-		*/
-		//me.print();
-		
-		
 
 
 		me2.insert(6);
