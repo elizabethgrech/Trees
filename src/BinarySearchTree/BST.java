@@ -266,7 +266,7 @@ public class BST {
 
 
 
-		me2.insert(6);
+/*		me2.insert(6);
 		me2.insert(3);
 		me2.insert(8);
 		me2.insert(1);
@@ -285,8 +285,15 @@ public class BST {
 		me2.insert(0);
 		me2.insert(9);
 		me2.insert(7);
-		me2.insert(6);
+		me2.insert(6);*/
 
+		Random rand = new Random();
+		rand.ints(100);
+		for(int i=0; i<50; i++){
+			//System.out.println(me.insert(rand.nextInt(10)));
+			me2.insert(rand.nextInt(100));
+		}
+		
 		System.out.println("--------Da Raw Tree--------");
 
 		
