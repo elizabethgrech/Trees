@@ -122,14 +122,41 @@ public class RedBlackIntervalTree {
         public boolean validate(){
         	if(this.parent != null && this.parent.isRed)
         	{
-        		if()//uncle red
+        		if(this.parent.parent.right.isRed && this.parent.parent.left.isRed)//uncle red & parent are red
+        		{
+        			this.parent.parent.right.isRed = false;//set uncle and parent to black
+        			this.parent.parent.left.isRed = false;//set uncle and parent to black
+        			this.parent.parent.isRed = true;//set grandparent to red
+        			this.parent.parent.validate();//run validate for new x
+        		}
+        		else //uncle is black
         		{
         			
+        			if(this == this.parent.parent.left.left)//left left case
+        			{
+            			this.parent.parent.rotateRight();
+            			this.parent.isRed = this.parent.right.isRed;
+            			this.parent.right.isRed = !this.parent.right.isRed;
+        				
+        			}
+        			else if(this == this.parent.parent.left.right)//left right case
+        			{
+        				this.parent.rotateLeft();
+        				
+        			}
+        			else if(this == this.parent.parent.right.right)//right right case
+        			{
+        				this.parent.parent.rotateLeft();
+        			}
+        			else if(this == this.parent.parent.right.left)//right left case
+        			{
+        				this.parent.rotateRight();
+        			}
         		}
-        		else //uncle black
-        		{
-        			
-        		}
+        	}
+        	else //uncle black
+        	{
+        		
         	}
 			return false;
         }
